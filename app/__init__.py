@@ -28,6 +28,7 @@ the `FLASK_ENV` environment variable.
 import os
 from flask import Flask
 from flask_pymongo import PyMongo
+from .routes import main as main_blueprint
 
 
 # Initialize the database
@@ -46,7 +47,6 @@ def create_app():
     mongo.init_app(app)
 
     # Register blueprints
-    from .routes import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
     return app
