@@ -1,8 +1,34 @@
-# app/__init__.py
+"""
+__init__.py: Application Factory Module
 
+This module serves as the entry point for the Flask application, providing
+the application factory function `create_app` to initialize and configure the
+Flask application instance.
+
+- Imports:
+  - `os`: Provides access to environment variables for dynamic configuration.
+  - `Flask`: Core Flask framework for web application creation.
+  - `PyMongo`: Flask extension for MongoDB database integration.
+
+- Global Variables:
+  - `mongo`: PyMongo instance for connecting to MongoDB.
+
+- Functions:
+  - `create_app`: Application factory function that:
+    - Creates and configures the Flask app instance.
+    - Loads environment-specific configurations.
+    - Initializes database extensions.
+    - Registers blueprints for routing and API management.
+
+This file implements the "application factory" pattern, allowing for multiple
+configurations and environments to be used during runtime by setting
+the `FLASK_ENV` environment variable.
+"""
+
+import os
 from flask import Flask
 from flask_pymongo import PyMongo
-import os
+
 
 # Initialize the database
 mongo = PyMongo()

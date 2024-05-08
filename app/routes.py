@@ -1,4 +1,9 @@
-from flask import Flask, jsonify, Blueprint
+"""
+Module docstring to come detailing the routes and functions later
+So far only test functions here
+"""
+
+from flask import jsonify, Blueprint
 
 main = Blueprint('main', __name__)
 
@@ -9,7 +14,8 @@ def hello_world():
     return "<p>Hello, World2!</p>"
 
 @main.route("/testPost", methods=["POST"])
-def testPostRequest():
+def test_post_request():
+    """A test function that can be removed when no longer needed"""
     print("We succeeded with test post")
     # random test return response
     response = {
