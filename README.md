@@ -20,12 +20,14 @@ Will utilize a NoSQL database (MongoDB) so that additional information can easil
 A web application for the initial build but will be followed up with an iOS and Android applications to control from a mobile device. 
 
 ## Application Setup and Run
+Using Python 3.12.3
 1. Clone repository
-2. Install dependencies with
+2. Setup environment (if desired)
+3. Install dependencies with
 ```
 pip install -r requirements.txt
 ```
-3. Run the application with
+4. Run the application with
 ```
 python run.py
 ```
