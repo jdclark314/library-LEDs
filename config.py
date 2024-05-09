@@ -37,7 +37,7 @@ class DevelopmentConfig(Config):
     """Development environment settings."""
     # pylint: disable=too-few-public-methods
     DEBUG = True
-    MONGO_URI = os.environ.get('DEV_MONGO_URI', 'mongodb://localhost:27017/dev_db')
+    MONGO_URI = os.environ.get('DEV_MONGO_URI', 'mongodb://localhost:27017/Dev')
 
 class ProductionConfig(Config):
     """Production environment settings."""

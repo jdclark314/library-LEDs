@@ -9,6 +9,7 @@ Flask application instance.
   - `os`: Provides access to environment variables for dynamic configuration.
   - `Flask`: Core Flask framework for web application creation.
   - `PyMongo`: Flask extension for MongoDB database integration.
+  - `Create_routes_blueprint`: Function to generate necessary route functions for blueprint
 
 - Global Variables:
   - `mongo`: PyMongo instance for connecting to MongoDB.
@@ -28,12 +29,10 @@ the `FLASK_ENV` environment variable.
 import os
 from flask import Flask
 from flask_pymongo import PyMongo
-from .routes import main as main_blueprint
-
+from .routes import create_routes_blueprint
 
 # Initialize the database
 mongo = PyMongo()
-
 
 def create_app():
     """Create and configure the Flask app instance."""
@@ -45,8 +44,10 @@ def create_app():
 
     # Initialize extensions with the app
     mongo.init_app(app)
+    # Allow usage of collection directly
+    collection = mongo.db.LED_Library
 
     # Register blueprints
+    main_blueprint = create_routes_blueprint(collection)
     app.register_blueprint(main_blueprint)
-
     return app
