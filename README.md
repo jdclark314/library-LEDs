@@ -31,3 +31,5 @@ pip install -r requirements.txt
 ```
 python run.py
 ```
+5. The API endpoint can be hit with the requests in the API_Requests_Collection
+   
