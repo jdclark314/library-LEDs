@@ -37,23 +37,26 @@ def create_routes_blueprint(collection: Collection) -> Blueprint:
         title = "Echoes of Eternity"
         result = list(collection.find({'Title': title}, {'_id': 0}))
         return jsonify(result)
-    
+
     @main.route("/singleBookByTitle", methods=["POST"])
     def get_single_book_by_title():
-        """ Takes a book title and searches for the LED light position in the database"""
+        """ 
+        Takes a book title and searches for the LED light position in the database
+        TODO:
+            - Pass the LED Position to the Light Controller functions
+            This should also handle multiple copies of the same book correctly
+        """
         try:
             request_data = SingleBookByTitleRequest(**request.json)
             request_data.validate()
             documents = collection.find({'Title': request_data.title}, {'_id': 0})
             books = [Book(**doc) for doc in documents]
-            print("LED Position: ", books[0].LED_position)
-            #TODO Pass the LED Position to the Light Controller functions 
-            # This should also handle multiple copies of the same book correctly
+            print("LED Position: ", books[0].led_position)
 
             return "success"
         except ValueError as e:
             return jsonify({'error': str(e)})
         except Exception as e:
-            return jsonify({'error': f"Unexpected error: {e}"})    
+            return jsonify({'error': f"Unexpected error: {e}"})
 
     return main
