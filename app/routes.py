@@ -56,7 +56,6 @@ def create_routes_blueprint(collection: Collection) -> Blueprint:
             return "success"
         except ValueError as e:
             return jsonify({'error': str(e)})
-        except Exception as e:
-            return jsonify({'error': f"Unexpected error: {e}"})
+
 
     return main
