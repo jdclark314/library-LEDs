@@ -3,8 +3,10 @@ Module docstring to come detailing the routes and functions later
 So far only test functions here
 """
 
-from flask import jsonify, Blueprint
+from flask import jsonify, Blueprint, request
 from pymongo.collection import Collection
+
+from app.models import Book, SingleBookByTitleRequest
 
 def create_routes_blueprint(collection: Collection) -> Blueprint:
     """Create and return the routes blueprint with the given collection."""
@@ -35,5 +37,25 @@ def create_routes_blueprint(collection: Collection) -> Blueprint:
         title = "Echoes of Eternity"
         result = list(collection.find({'Title': title}, {'_id': 0}))
         return jsonify(result)
+
+    @main.route("/singleBookByTitle", methods=["POST"])
+    def get_single_book_by_title():
+        """ 
+        Takes a book title and searches for the LED light position in the database
+        TODO:
+            - Pass the LED Position to the Light Controller functions
+            This should also handle multiple copies of the same book correctly
+        """
+        try:
+            request_data = SingleBookByTitleRequest(**request.json)
+            request_data.validate()
+            documents = collection.find({'Title': request_data.title}, {'_id': 0})
+            books = [Book(**doc) for doc in documents]
+            print("LED Position: ", books[0].led_position)
+
+            return "success"
+        except ValueError as e:
+            return jsonify({'error': str(e)})
+
 
     return main
