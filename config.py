@@ -12,7 +12,7 @@ Classes:
   - Inherits from `Config` and provides settings specific to the development environment.
   - Enables debugging with `DEBUG = True`.
   - Sets `MONGO_URI` to either
-        - to a local MongoDB development database 
+        - to a local MongoDB development database
         - to the environment variable `DEV_MONGO_URI`.
 
 - `ProductionConfig`:
@@ -20,7 +20,7 @@ Classes:
   - Disables debugging with `DEBUG = False`.
   - Sets `MONGO_URI` to either
         - connect to a production MongoDB database via the environment variable `MONGO_URI`
-        - localhost string 
+        - localhost string
   - TODO: update the production config default to error handle successfully
 
 This module allows for easy switching between different environments based on application needs.
