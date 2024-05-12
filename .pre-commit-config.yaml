@@ -4,8 +4,8 @@ repos:
     hooks:
     -   id: trailing-whitespace
     -   id: check-yaml
-    # the end of file fixer causes an issue with github actions, leaving out for now
-    # -   id: end-of-file-fixer
+    -   id: end-of-file-fixer
+        exclude: '(\.txt$|\.pylintrc$)'
     -   id: check-added-large-files
 
 -   repo: local
@@ -15,3 +15,10 @@ repos:
         entry: pylint
         language: system
         types: [python]
+      - id: pytest
+        name: Run pytest
+        entry: pytest
+        language: system
+        pass_filenames: false  # Set to false because pytest discovers tests on its own
+        always_run: true  # Optionally set to true to run tests on every commit
+        stages: [commit]  # Optionally specify when to run this hook
