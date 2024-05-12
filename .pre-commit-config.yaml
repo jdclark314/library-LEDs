@@ -7,3 +7,11 @@ repos:
     # the end of file fixer causes an issue with github actions, leaving out for now
     # -   id: end-of-file-fixer
     -   id: check-added-large-files
+
+-   repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        types: [python]
