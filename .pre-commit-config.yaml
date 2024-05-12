@@ -1,0 +1,17 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1  # Use the latest release from the official repo
+    hooks:
+    -   id: trailing-whitespace
+    -   id: check-yaml
+    # the end of file fixer causes an issue with github actions, leaving out for now
+    # -   id: end-of-file-fixer
+    -   id: check-added-large-files
+
+-   repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        types: [python]

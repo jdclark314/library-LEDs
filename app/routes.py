@@ -40,7 +40,7 @@ def create_routes_blueprint(collection: Collection) -> Blueprint:
 
     @main.route("/singleBookByTitle", methods=["POST"])
     def get_single_book_by_title():
-        """ 
+        """
         Takes a book title and searches for the LED light position in the database
         TODO:
             - Pass the LED Position to the Light Controller functions
