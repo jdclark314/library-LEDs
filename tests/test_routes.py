@@ -4,11 +4,11 @@ Test functions to test the features of app/routes.py
 
 def test_get_single_book_by_title_success(client, mocker):
     client, mock_collection = client
-    mock_collection.find.return_value = [{'Title': 'Test Book', 'led_position': 42}]
+    mock_collection.find.return_value = [{'title': 'Test Book', 'led_position': 42}]
     mocker.patch('app.routes.Book', return_value=mocker.Mock(led_position=42))
     response = client.post('/singleBookByTitle', json={'title': 'Test Book'})
     assert response.data == b'success'
-    mock_collection.find.assert_called_once_with({'Title': 'Test Book'}, {'_id': 0})
+    mock_collection.find.assert_called_once_with({'title': 'Test Book'}, {'_id': 0})
 
 def test_get_single_book_by_title_validation_error(client):
     client, _ = client
@@ -19,13 +19,12 @@ def test_get_single_book_by_title_validation_error(client):
 def test_get_single_book_by_title_multiple_books(client, mocker):
     client, mock_collection = client
     mock_collection.find.return_value = [
-        {'Title': 'Test Book', 'led_position': 42},
-        {'Title': 'Test Book', 'led_position': 43}
+        {'title': 'Test Book', 'led_position': 42},
+        {'title': 'Test Book', 'led_position': 43}
     ]
     mocker.patch('app.routes.Book', side_effect=lambda **kwargs: mocker.Mock(**kwargs))
     response = client.post('/singleBookByTitle', json={'title': 'Test Book'})
     assert response.data == b'success'
-    # assert mock_collection.find.assert_called_once_with({'Title': 'Test Book'}, {'_id': 0})
 
 def test_get_single_book_by_title_value_error(client, mocker):
     client, _ = client
