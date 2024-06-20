@@ -42,6 +42,10 @@ def create_app():
     env = os.getenv('FLASK_ENV', 'DevelopmentConfig')
     app.config.from_object(f'config.{env}')
 
+    # setup google environment variables
+    # json file name matches the service account file provided
+    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'library-leds-5691072e7d51.json'
+
     # Initialize extensions with the app
     mongo.init_app(app)
     # Allow usage of collection directly

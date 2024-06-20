@@ -6,6 +6,7 @@ from flask import jsonify, Blueprint, request
 from pymongo.collection import Collection
 from app.light_controller import turn_on_lights
 from app.models import Book, SingleBookByTitleRequest
+from app.update_book_positions import start_book_position_update
 
 def create_routes_blueprint(collection: Collection) -> Blueprint:
     """Create and return the routes blueprint with the given collection."""
@@ -46,5 +47,16 @@ def create_routes_blueprint(collection: Collection) -> Blueprint:
         except ValueError as e:
             return jsonify({'error': str(e)})
 
+    @main.route("/updateBookPositions", methods=["POST"])
+    def update_book_positions_from_image():
+        """
+        Takes an image of the bookshelf and:
+            1. Finds the titles of books in the image
+            2. Finds the positions of the books on the book shelf
+            3. Correlates the positions of books to LED positions
+            4. Updates database of Books with new LED positions
+        """
+        start_book_position_update()
+        return "success!"
 
     return main
