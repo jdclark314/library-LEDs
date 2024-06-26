@@ -8,8 +8,7 @@ This module contains:
 
 import vertexai
 from vertexai.generative_models import GenerativeModel
-# import vertexai.preview.generative_models as generative_models
-# from vertexai.preview import generative_models
+
 
 generation_config = {
     "max_output_tokens": 8192,
@@ -17,21 +16,10 @@ generation_config = {
     "top_p": 0.95,
 }
 
-# only removed to push code cause not dealing with lint errors right now
-# safety_settings = {
-#     generative_models.HarmCategory.HARM_CATEGORY_HATE_SPEECH:
-# generative_models.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-#     generative_models.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT:
-# generative_models.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-#     generative_models.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT:
-# generative_models.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-#     generative_models.HarmCategory.HARM_CATEGORY_HARASSMENT:
-# generative_models.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-# }
-
 def generate():
     """
-    Mock function to test connection to Google AI
+    Generate a response from Vertex AI
+    Currently only pulls in the textPrompt variable
     """
     vertexai.init(project="library-leds", location="us-central1")
     model = GenerativeModel(
@@ -39,22 +27,52 @@ def generate():
     )
     # mock content to test, update with correct values
     responses = model.generate_content(
-        ["""Please tell me a poem in haiku format"""],
+        [TEXT_PROMPT],
         generation_config=generation_config,
-        # safety_settings=safety_settings,
         stream=True,
     )
+    return responses
 
+
+def parse_text_response_from_vertex_ai(responses):
+    """
+    Parse the response from Vertex AI into a list of tuples
+    Responses - value returned from AI request
+    """
+    # Should ideally make a function to parse out the response
+    text_list = []
     for response in responses:
-        print(response.text, end="")
+        text_list.append(response.text)
 
+    single_string_text_response = "".join(text_list)
+
+    items_to_create = single_string_text_response.strip().split(');')
+    parsed_data = []
+    for item in items_to_create:
+        item = item.strip(' (')
+        if item:
+            parsed_data.append(tuple(map(str.strip, item.split(','))))
+
+    print("here is my parsed data: ", parsed_data)
+    return parsed_data
+
+# only here as placeholder to generate a text prompt later
+TEXT_PROMPT = """
+                Please send me back a list of 5 random book titles, with positions on a bookshelf in inches,
+                the left and right sides of the book. Assume all books are side by side on bookshelf.
+                Create the list in this format
+                "(book_title, book_left_position, book_right_position);(book_title_2, book_left_position_2, book_right_position_3)".
+                Continue this until all books are filled.
+                Provide the list in a single string.
+                Do not provide any other text other than the strings of books
+            """
 def start_book_position_update():
     """
     Main driving function of updating book positions
     """
-    # connect to AI system
-    # print(connect_to_google())
-    generate()
+    responses = generate()
+    parsed_response = parse_text_response_from_vertex_ai(responses)
+    print("this is the parsed response: ", parsed_response)
     # generate prompt to send to AI system
     # send image and prompt to AI
     # accept and parse response
