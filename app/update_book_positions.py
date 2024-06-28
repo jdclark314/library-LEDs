@@ -25,7 +25,6 @@ def generate():
     model = GenerativeModel(
       "gemini-1.5-flash-001",
     )
-    # mock content to test, update with correct values
     responses = model.generate_content(
         [TEXT_PROMPT],
         generation_config=generation_config,
@@ -39,7 +38,6 @@ def parse_text_response_from_vertex_ai(responses):
     Parse the response from Vertex AI into a list of tuples
     Responses - value returned from AI request
     """
-    # Should ideally make a function to parse out the response
     text_list = []
     for response in responses:
         text_list.append(response.text)
@@ -70,11 +68,13 @@ def start_book_position_update():
     """
     Main driving function of updating book positions
     """
-    responses = generate()
-    parsed_response = parse_text_response_from_vertex_ai(responses)
-    print("this is the parsed response: ", parsed_response)
     # generate prompt to send to AI system
     # send image and prompt to AI
+    responses = generate()
     # accept and parse response
+    parsed_response = parse_text_response_from_vertex_ai(responses)
+    print("this is the parsed response: ", parsed_response)
+
+
     # update titles of books in database
     # update positions of books in database

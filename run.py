@@ -19,10 +19,13 @@ python run.py
 
 """
 from app import create_app
+from app.mock.mock_endpoints import apply_mock
 
 # Create the Flask app instance using the factory function
 app = create_app()
 
 if __name__ == '__main__':
     # Run the Flask app on a local development server
+    # this will mock the requests to Google AI
+    apply_mock()
     app.run(debug=True)
