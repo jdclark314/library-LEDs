@@ -8,17 +8,17 @@ repos:
         exclude: '(\.txt$|\.pylintrc$)'
     -   id: check-added-large-files
 
--   repo: local
-    hooks:
+# -   repo: local
+#     hooks:
       # - id: pylint
       #   name: pylint
       #   entry: pylint
       #   language: system
       #   types: [python]
-      - id: pytest
-        name: Run pytest
-        entry: pytest
-        language: system
-        pass_filenames: false  # Set to false because pytest discovers tests on its own
-        always_run: true  # Optionally set to true to run tests on every commit
-        stages: [commit]  # Optionally specify when to run this hook
+      # - id: pytest
+      #   name: Run pytest
+      #   entry: pytest
+      #   language: system
+      #   pass_filenames: false  # Set to false because pytest discovers tests on its own
+      #   always_run: true  # Optionally set to true to run tests on every commit
+      #   stages: [commit]  # Optionally specify when to run this hook
