@@ -52,7 +52,6 @@ def parse_text_response_from_vertex_ai(responses):
         if item:
             parsed_data.append(tuple(map(str.strip, item.split(','))))
 
-    print("here is my parsed data: ", parsed_data)
     return parsed_data
 
 # only here as placeholder to generate a text prompt later
@@ -68,13 +67,11 @@ TEXT_PROMPT = """
 
 def update_titles_in_DB(resp: list, collection: Collection):
     """
-    Updates titles in the DB
+    Updates titles in the DB. Assumes list passed in is all books in library
     resp is the parsed list of the response from the AI
     Collection is the mongo DB to store values
     """
-    # theres going to need to be more logic here to decide if should be fresh add or an update
-    # also to remove books that were not found in the library images
-    # also needs logic for no change in position
+
     for r in resp:
         # change this to append doc to alist
         # after the for loop use .insert_many
@@ -84,8 +81,6 @@ def update_titles_in_DB(resp: list, collection: Collection):
             "right_pos": r[2]
         }
         collection.insert_one(doc)
-
-    # next steps are get insert in a loop to get all values
 
 
 def start_book_position_update(collection: Collection):
@@ -98,8 +93,8 @@ def start_book_position_update(collection: Collection):
     responses = get_ai_response()
     # accept and parse response
     parsed_response = parse_text_response_from_vertex_ai(responses)
-    print("this is the parsed response: ", parsed_response)
+    # need to determine LED positions of the books
+    # need to clear out the collection prior to updating DB
+    #   we will just clear it out and make a new list of the entries
+    #   just cause its less code to wipe clean than to conditionally find fields to update
     update_titles_in_DB(parsed_response, collection)
-
-    # update titles of books in database
-    # update positions of books in database
