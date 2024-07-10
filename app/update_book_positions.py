@@ -6,6 +6,7 @@ This module contains:
 
 """
 
+from pymongo.collection import Collection
 import vertexai
 from vertexai.generative_models import GenerativeModel
 
@@ -64,9 +65,34 @@ TEXT_PROMPT = """
                 Provide the list in a single string.
                 Do not provide any other text other than the strings of books
             """
-def start_book_position_update():
+
+def update_titles_in_DB(resp: list, collection: Collection):
+    """
+    Updates titles in the DB
+    resp is the parsed list of the response from the AI
+    Collection is the mongo DB to store values
+    """
+    print("We are in the new function:")
+    print("resp[0]: ", resp[0])
+    print("type of: ", type(resp[0]) )
+    # theres going to need to be more logic here to decide if should be fresh add or an update
+    # also to remove books that were not found in the library images
+    # trialing out with 1 item
+    doc = {
+        "title": resp[0][0],
+        "left_pos": resp[0][1],
+        "right_pos": resp[0][2]
+    }
+    result = collection.insert_one(doc)
+    print("what happened after insert: ", result)
+    # one item works successfully
+    # next steps are get insert in a loop to get all values
+
+
+def start_book_position_update(collection: Collection):
     """
     Main driving function of updating book positions
+    Collection is the mongo DB to store values
     """
     # generate prompt to send to AI system
     # send image and prompt to AI
@@ -74,7 +100,7 @@ def start_book_position_update():
     # accept and parse response
     parsed_response = parse_text_response_from_vertex_ai(responses)
     print("this is the parsed response: ", parsed_response)
-
+    update_titles_in_DB(parsed_response, collection)
 
     # update titles of books in database
     # update positions of books in database

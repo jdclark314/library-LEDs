@@ -56,7 +56,7 @@ def create_routes_blueprint(collection: Collection) -> Blueprint:
             3. Correlates the positions of books to LED positions
             4. Updates database of Books with new LED positions
         """
-        start_book_position_update()
+        start_book_position_update(collection)
         return "success!"
 
     return main
