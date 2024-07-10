@@ -17,7 +17,7 @@ generation_config = {
     "top_p": 0.95,
 }
 
-def generate():
+def get_ai_response():
     """
     Generate a response from Vertex AI
     Currently only pulls in the textPrompt variable
@@ -72,20 +72,19 @@ def update_titles_in_DB(resp: list, collection: Collection):
     resp is the parsed list of the response from the AI
     Collection is the mongo DB to store values
     """
-    print("We are in the new function:")
-    print("resp[0]: ", resp[0])
-    print("type of: ", type(resp[0]) )
     # theres going to need to be more logic here to decide if should be fresh add or an update
     # also to remove books that were not found in the library images
-    # trialing out with 1 item
-    doc = {
-        "title": resp[0][0],
-        "left_pos": resp[0][1],
-        "right_pos": resp[0][2]
-    }
-    result = collection.insert_one(doc)
-    print("what happened after insert: ", result)
-    # one item works successfully
+    # also needs logic for no change in position
+    for r in resp:
+        # change this to append doc to alist
+        # after the for loop use .insert_many
+        doc = {
+            "title": r[0],
+            "left_pos": r[1],
+            "right_pos": r[2]
+        }
+        collection.insert_one(doc)
+
     # next steps are get insert in a loop to get all values
 
 
@@ -96,7 +95,7 @@ def start_book_position_update(collection: Collection):
     """
     # generate prompt to send to AI system
     # send image and prompt to AI
-    responses = generate()
+    responses = get_ai_response()
     # accept and parse response
     parsed_response = parse_text_response_from_vertex_ai(responses)
     print("this is the parsed response: ", parsed_response)
